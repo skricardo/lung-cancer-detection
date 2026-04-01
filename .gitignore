@@ -1,0 +1,85 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ========================
+# Virtual Environment
+# ========================
+.venv/
+venv/
+ENV/
+env/
+
+# ========================
+# Dados (LUNA16 e raw)
+# ========================
+data/
+
+# ========================
+# Variáveis de ambiente
+# ========================
+.env
+.env.*
+!.env.example
+
+# ========================
+# Jupyter Notebooks
+# ========================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# ========================
+# Modelos treinados / Checkpoints
+# ========================
+*.pth
+*.pt
+*.onnx
+*.h5
+checkpoints/
+models/saved/
+
+# ========================
+# Logs e outputs
+# ========================
+logs/
+*.log
+wandb/
+runs/
+mlruns/
+
+# ========================
+# Outros
+# ========================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+.cache/
