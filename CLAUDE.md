@@ -1,49 +1,56 @@
 # CLAUDE.md — Contexto do Projeto
 
-## 🎯 Objetivo
+## Regras de Estilo (obrigatorio para todos os agentes)
 
-Desenvolvimento de um sistema de detecção de câncer de pulmão (nódulos pulmonares) utilizando Deep Learning, com base no dataset **LUNA16**.
+- Nunca usar emojis em nenhum arquivo, comentario ou output.
+- Em notebooks Jupyter, nao usar secoes numeradas (ex: "1. Introducao", "2. Dados"). Usar apenas titulos descritivos.
+- Nunca separar secoes com linhas horizontais ("---") em notebooks ou markdown.
 
-## 📁 Estrutura
+## Objetivo
 
-| Pasta        | Descrição                                  |
+Desenvolvimento de um sistema de deteccao de cancer de pulmao (nodulos pulmonares) utilizando Deep Learning, com base no dataset **LUNA16**.
+
+## Estrutura
+
+| Pasta        | Descricao                                  |
 |--------------|--------------------------------------------|
-| `src/`       | Código-fonte (modelos, pipeline, utils)    |
-| `notebooks/` | Notebooks de exploração e protótipos       |
-| `tests/`     | Testes unitários e de integração           |
-| `data/luna/` | Dataset LUNA16 (não versionado)            |
-| `data/raw/`  | Dados auxiliares brutos (não versionado)   |
-| `docs/`      | Documentação técnica e de referência       |
+| `src/`       | Codigo-fonte (modelos, pipeline, utils)    |
+| `notebooks/` | Notebooks de exploracao e prototipos       |
+| `tests/`     | Testes unitarios e de integracao           |
+| `data/luna/` | Dataset LUNA16 (nao versionado)            |
+| `data/raw/`  | Dados auxiliares brutos (nao versionado)   |
+| `docs/`      | Documentacao tecnica e de referencia       |
 
-## 🛠️ Stack
+## Stack
 
-- **Python** >= 3.11.3
+- **Python** >= 3.12
 - **PyTorch** (modelo principal)
-- **SimpleITK** (leitura de imagens médicas .mhd/.raw)
-- **scikit-learn / scikit-image** (pré e pós processamento)
-- **Gradio** (interface de demonstração)
-- **Jupyter** (experimentação)
-- **Manim** (visualizações/animações)
+- **SimpleITK** (leitura de imagens medicas .mhd/.raw)
+- **scikit-learn / scikit-image** (pre e pos processamento)
+- **Gradio** (interface de demonstracao)
+- **Jupyter** (experimentacao)
+- **Manim** (visualizacoes/animacoes)
 - **uv** (gerenciador de ambiente)
 - **pytest** (testes)
 
-## 📋 Demandas / TODO
+## Demandas / TODO
 
-- [ ] 🔧 Setup do projeto (pastas, ambiente, git)
-- [ ] 📥 Download e organização do dataset LUNA16
-- [ ] 🔍 EDA — Análise exploratória dos CT scans
-- [ ] 🏗️ Pipeline de pré-processamento (windowing, resampling, normalização)
-- [ ] 🧠 Definição e treino do modelo (arquitetura)
-- [ ] 📊 Avaliação (métricas, curvas FROC)
-- [ ] 🖥️ Interface Gradio para demonstração
-- [ ] 📝 Documentação final e portfólio
+- [x] Setup do projeto (pastas, ambiente, git)
+- [ ] Download e organizacao do dataset LUNA16
+- [ ] EDA — Analise exploratoria dos CT scans
+- [ ] Pipeline de pre-processamento (windowing, resampling, normalizacao)
+- [ ] Definicao e treino do modelo (arquitetura)
+- [ ] Avaliacao (metricas, curvas FROC)
+- [ ] Interface Gradio para demonstracao
+- [ ] Documentacao final e portfolio
 
-## 📌 Decisões de Design
+## Decisoes de Design
 
-_A ser preenchido conforme o projeto avança._
+_A ser preenchido conforme o projeto avanca._
 
-## ⚠️ Notas Importantes
+## Notas Importantes
 
-- O dataset LUNA16 **não é versionado** no Git (está no `.gitignore`).
-- Modelos treinados (`.pth`, `.pt`) também são ignorados pelo Git.
-- Variáveis sensíveis ficam no `.env` (não versionado).
+- O dataset LUNA16 **nao e versionado** no Git (esta no `.gitignore`).
+- Modelos treinados (`.pth`, `.pt`) tambem sao ignorados pelo Git.
+- Variaveis sensiveis ficam no `.env` (nao versionado).
+- Python 3.12 usado no venv (3.14 nao tem wheels pre-compiladas para moderngl/manim).
