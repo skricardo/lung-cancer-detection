@@ -1,43 +1,43 @@
-# 🫁 Lung Cancer Detection — LUNA16
+# Lung Cancer Detection — LUNA16
 
-Detecção de nódulos pulmonares usando Deep Learning com o dataset [LUNA16](https://luna16.grand-challenge.org/).
+Deteccao de nodulos pulmonares usando Deep Learning com o dataset [LUNA16](https://luna16.grand-challenge.org/).
 
-## 📂 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 ├── data/
 │   ├── luna/          # Dataset LUNA16 (CT scans, annotations)
 │   └── raw/           # Dados brutos auxiliares
-├── docs/              # Documentação do projeto
-├── notebooks/         # Jupyter notebooks (EDA, protótipos)
-├── src/               # Código-fonte do projeto
+├── docs/              # Documentacao do projeto
+├── notebooks/         # Jupyter notebooks (EDA, prototipos)
+├── src/               # Codigo-fonte do projeto
 ├── tests/             # Testes automatizados
-├── .env               # Variáveis de ambiente (não versionado)
+├── .env               # Variaveis de ambiente (nao versionado)
 ├── .gitignore
-├── pyproject.toml     # Dependências e configuração do projeto
+├── pyproject.toml     # Dependencias e configuracao do projeto
 └── README.md
 ```
 
-## ⚙️ Setup
+## Setup
 
-### Pré-requisitos
+### Pre-requisitos
 
 - Python >= 3.11.3
 - [uv](https://docs.astral.sh/uv/) (gerenciador de pacotes)
 
-### Instalação
+### Instalacao
 
 ```bash
-# Clonar o repositório
+# Clonar o repositorio
 git clone https://github.com/skricardo/lung-cancer-detection.git
 cd lung-cancer-detection
 
-# Criar ambiente virtual e instalar dependências
+# Criar ambiente virtual e instalar dependencias
 uv venv
 uv sync
 ```
 
-### Ativação do Ambiente
+### Ativacao do Ambiente
 
 ```bash
 # Windows
@@ -47,21 +47,21 @@ uv sync
 source .venv/bin/activate
 ```
 
-## 🧪 Testes
+## Testes
 
 ```bash
 pytest
 ```
 
-## 📊 Dataset
+## Dataset
 
-O projeto utiliza o **LUNA16** (Lung Nodule Analysis 2016), que contém:
+O projeto utiliza o **LUNA16** (Lung Nodule Analysis 2016), que contem:
 - 888 CT scans
-- Anotações de nódulos validadas por radiologistas
+- Anotacoes de nodulos validadas por radiologistas
 - Formato: `.mhd` / `.raw`
 
-> ⚠️ O dataset não é versionado. Faça o download em [luna16.grand-challenge.org](https://luna16.grand-challenge.org/) e coloque os arquivos em `data/luna/`.
+> O dataset nao e versionado. Faca o download em [luna16.grand-challenge.org](https://luna16.grand-challenge.org/) e coloque os arquivos em `data/luna/`.
 
-## 📝 Licença
+## Licenca
 
-Este projeto é para fins educacionais e de pesquisa.
+Este projeto e para fins educacionais e de pesquisa.
