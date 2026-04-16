@@ -69,5 +69,6 @@ python scripts/run_training_phase2.py
 
 ---
 
-## Licença
-Este projeto é para fins educacionais e de pesquisa em saúde digital.
+## Licença e Aviso Legal
+
+Este projeto tem caráter estritamente educacional e de pesquisa. O modelo de inteligência artificial aqui apresentado é uma ferramenta de estudo e **não substitui, sob nenhuma circunstância, o diagnóstico, aconselhamento ou tratamento realizado por um profissional médico qualificado**. Os resultados obtidos não devem ser utilizados para fins clínicos ou de diagnóstico em pacientes reais.
