@@ -2,11 +2,11 @@
 
 Este projeto implementa um modelo de Deep Learning (CNN 3D) para a detecção automatizada de nódulos pulmonares, utilizando o dataset [LUNA16](https://luna16.grand-challenge.org/).
 
-## 🚀 Status do Projeto: Fase 2 Concluída
+## Status do Projeto: Fase 2 Concluída
 
 Atualmente, o projeto concluiu sua segunda fase de treinamento, atingindo marcos significativos de performance em um ambiente de dados altamente desbalanceado.
 
-### 📊 Resultados Atuais (Época 10)
+### Resultados Atuais (Época 10)
 | Métrica | Valor | Observação |
 | :--- | :--- | :--- |
 | **Recall (Sensibilidade)** | **~95%** | Essencial para não perder nódulos reais em exames médicos. |
@@ -15,7 +15,7 @@ Atualmente, o projeto concluiu sua segunda fase de treinamento, atingindo marcos
 
 ---
 
-## 🛠️ Diferenciais Técnicos
+## Diferenciais Técnicos
 
 ### 1. Robust Data Loading & Cache Recovery
 Implementamos um sistema de carregamento de dados resiliente que resolve problemas de corrupção de arquivos de forma autônoma. Se um arquivo de cache (`.pt`) for detectado como corrompido, o sistema:
@@ -29,7 +29,7 @@ Utilizamos uma abordagem de amostragem balanceada (`ratio_int=2`) para garantir 
 
 ---
 
-## 📂 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 ├── checkpoints/       # Modelos treinados (.pt)
@@ -44,7 +44,7 @@ Utilizamos uma abordagem de amostragem balanceada (`ratio_int=2`) para garantir 
 └── pyproject.toml     # Dependencias (uv)
 ```
 
-## 🚀 Como Executar
+## Como Executar
 
 ### Pré-requisitos
 - Python >= 3.11
@@ -69,5 +69,5 @@ python scripts/run_training_phase2.py
 
 ---
 
-## 📝 Licença
+## Licença
 Este projeto é para fins educacionais e de pesquisa em saúde digital.
