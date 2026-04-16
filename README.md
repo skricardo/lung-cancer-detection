@@ -1,67 +1,73 @@
 # Lung Cancer Detection — LUNA16
 
-Deteccao de nodulos pulmonares usando Deep Learning com o dataset [LUNA16](https://luna16.grand-challenge.org/).
+Este projeto implementa um modelo de Deep Learning (CNN 3D) para a detecção automatizada de nódulos pulmonares, utilizando o dataset [LUNA16](https://luna16.grand-challenge.org/).
 
-## Estrutura do Projeto
+## 🚀 Status do Projeto: Fase 2 Concluída
+
+Atualmente, o projeto concluiu sua segunda fase de treinamento, atingindo marcos significativos de performance em um ambiente de dados altamente desbalanceado.
+
+### 📊 Resultados Atuais (Época 10)
+| Métrica | Valor | Observação |
+| :--- | :--- | :--- |
+| **Recall (Sensibilidade)** | **~95%** | Essencial para não perder nódulos reais em exames médicos. |
+| **F1-Score** | **0.2495** | Recorde atingido com ajuste fino de Learning Rate (Fase 2). |
+| **Acurácia de Validação** | **98.5%** | Alta estabilidade na classificação de candidatos. |
+
+---
+
+## 🛠️ Diferenciais Técnicos
+
+### 1. Robust Data Loading & Cache Recovery
+Implementamos um sistema de carregamento de dados resiliente que resolve problemas de corrupção de arquivos de forma autônoma. Se um arquivo de cache (`.pt`) for detectado como corrompido, o sistema:
+1. Detecta o `RuntimeError`.
+2. Exclui o arquivo inválido.
+3. Regenera o crop 3D diretamente do scan MHD original.
+4. Salva uma nova cópia íntegra e prossegue com o treinamento sem interrupções.
+
+### 2. Balanced Training Strategy
+Utilizamos uma abordagem de amostragem balanceada (`ratio_int=2`) para garantir que o modelo veja nódulos suficientes durante o treino, compensando o desbalanceamento natural do dataset (onde apenas ~0.25% dos candidatos são nódulos).
+
+---
+
+## 📂 Estrutura do Projeto
 
 ```
-├── data/
-│   ├── luna/          # Dataset LUNA16 (CT scans, annotations)
-│   └── raw/           # Dados brutos auxiliares
-├── docs/              # Documentacao do projeto
-├── notebooks/         # Jupyter notebooks (EDA, prototipos)
-├── src/               # Codigo-fonte do projeto
-├── tests/             # Testes automatizados
-├── .env               # Variaveis de ambiente (nao versionado)
-├── .gitignore
-├── pyproject.toml     # Dependencias e configuracao do projeto
-└── README.md
+├── checkpoints/       # Modelos treinados (.pt)
+├── data/luna/         # Dataset LUNA16 (MHD/RAW)
+├── notebooks/         # Analise de resultados e avaliacao:
+│   ├── 07_results_analysis.ipynb   # Graficos de Loss/F1
+│   └── 08_model_evaluation.ipynb   # Validacao do modelo final
+├── scripts/           # Scripts de execucao:
+│   ├── run_training.py          # Treino inicial (Fase 1)
+│   └── run_training_phase2.py   # Refinamento (Phase 2)
+├── src/               # Core do projeto (Model, Data, Inference)
+└── pyproject.toml     # Dependencias (uv)
 ```
 
-## Setup
+## 🚀 Como Executar
 
-### Pre-requisitos
+### Pré-requisitos
+- Python >= 3.11
+- [uv](https://docs.astral.sh/uv/)
 
-- Python >= 3.11.3
-- [uv](https://docs.astral.sh/uv/) (gerenciador de pacotes)
-
-### Instalacao
-
+### Instalação
 ```bash
-# Clonar o repositorio
 git clone https://github.com/skricardo/lung-cancer-detection.git
 cd lung-cancer-detection
-
-# Criar ambiente virtual e instalar dependencias
-uv venv
 uv sync
 ```
 
-### Ativacao do Ambiente
-
+### Treinamento
+Para iniciar o treinamento do zero ou retomar as fases:
 ```bash
-# Windows
-.venv\Scripts\activate
+# Fase 1 (Epocas 1-5)
+python scripts/run_training.py
 
-# Linux / macOS
-source .venv/bin/activate
+# Fase 2 (Epocas 6-10 - Fine Tuning)
+python scripts/run_training_phase2.py
 ```
 
-## Testes
+---
 
-```bash
-pytest
-```
-
-## Dataset
-
-O projeto utiliza o **LUNA16** (Lung Nodule Analysis 2016), que contem:
-- 888 CT scans
-- Anotacoes de nodulos validadas por radiologistas
-- Formato: `.mhd` / `.raw`
-
-> O dataset nao e versionado. Faca o download em [luna16.grand-challenge.org](https://luna16.grand-challenge.org/) e coloque os arquivos em `data/luna/`.
-
-## Licenca
-
-Este projeto e para fins educacionais e de pesquisa.
+## 📝 Licença
+Este projeto é para fins educacionais e de pesquisa em saúde digital.
