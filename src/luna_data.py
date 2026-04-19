@@ -2,9 +2,9 @@
 
 import copy
 import csv
+import hashlib
 import functools
 from collections import namedtuple
-import hashlib
 from pathlib import Path
 
 import numpy as np
@@ -14,7 +14,6 @@ from torch.utils.data import Dataset
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "luna"
 CACHE_DIR = DATA_DIR / "cache"
-CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 CandidateInfo = namedtuple(
@@ -43,24 +42,10 @@ def xyz_to_irc(coord_xyz, origin_xyz, vx_size_xyz, direction_a):
     return IRC(int(cri_a[2]), int(cri_a[1]), int(cri_a[0]))
 
 
-def get_cache_path(series_uid, center_xyz):
-    """Gera um path unico de cache para uma amostra."""
-    hash_str = f"{series_uid}_{center_xyz[0]:.2f}_{center_xyz[1]:.2f}_{center_xyz[2]:.2f}"
-    md5 = hashlib.md5(hash_str.encode('utf-8')).hexdigest()
-    return CACHE_DIR / f"{md5}.pt"
-
-
-@functools.lru_cache(1)
-def get_mhd_dict():
-    """Retorna um dicionário mapeando series_uid para o path completo do arquivo .mhd."""
-    mhd_files = list(DATA_DIR.rglob("*.mhd"))
-    return {p.stem: p for p in mhd_files}
-
-
 @functools.lru_cache(1)
 def load_candidates(require_on_disk=True):
-    mhd_dict = get_mhd_dict()
-    present_on_disk = set(mhd_dict.keys())
+    mhd_files = list(DATA_DIR.rglob("*.mhd"))
+    present_on_disk = {p.stem for p in mhd_files}
 
     diameter_dict = {}
     with open(DATA_DIR / "annotations.csv") as f:
@@ -101,10 +86,7 @@ def load_candidates(require_on_disk=True):
 
 class CtScan:
     def __init__(self, series_uid):
-        mhd_path = get_mhd_dict().get(series_uid)
-        if not mhd_path:
-            raise FileNotFoundError(f"Arquivo .mhd não encontrado para series_uid: {series_uid}")
-        
+        mhd_path = list(DATA_DIR.rglob(f"{series_uid}.mhd"))[0]
         ct_mhd = sitk.ReadImage(str(mhd_path))
         self.hu_a = np.array(
             sitk.GetArrayFromImage(ct_mhd), dtype=np.float32
@@ -134,34 +116,17 @@ class CtScan:
         return self.hu_a[tuple(slices)], center_irc
 
 
+def get_cache_path(series_uid, center_xyz):
+    """Gera um caminho determinístico de cache usando hash MD5."""
+    hash_input = f"{series_uid}_{center_xyz}"
+    hash_str = hashlib.md5(hash_input.encode()).hexdigest()
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    return CACHE_DIR / f"{hash_str}.pt"
+
+
 @functools.lru_cache(1)
 def get_ct(series_uid):
     return CtScan(series_uid)
-
-
-def get_crop_t(series_uid, center_xyz):
-    """
-    Carrega o crop do cache de forma robusta. 
-    Se o arquivo estiver corrompido, exclui e regenera.
-    """
-    cache_path = get_cache_path(series_uid, center_xyz)
-    crop_t = None
-    center_irc = None
-
-    if cache_path.exists():
-        try:
-            crop_t, center_irc = torch.load(cache_path, weights_only=False)
-        except (RuntimeError, Exception):
-            print(f"Warning: Corrupted cache file detected at {cache_path}. Deleting and regenerating...")
-            cache_path.unlink(missing_ok=True)
-
-    if crop_t is None:
-        ct = get_ct(series_uid)
-        crop_a, center_irc = ct.extract_crop(center_xyz)
-        crop_t = torch.from_numpy(crop_a).to(torch.float32).unsqueeze(0).clone()
-        torch.save((crop_t, center_irc), cache_path)
-
-    return crop_t, center_irc
 
 
 class LunaDataset(Dataset):
@@ -183,8 +148,11 @@ class LunaDataset(Dataset):
 
     def __getitem__(self, idx):
         candidate = self.candidates[idx]
-        crop_t, center_irc = get_crop_t(candidate.series_uid, candidate.center_xyz)
-        
+        ct = get_ct(candidate.series_uid)
+        crop_a, center_irc = ct.extract_crop(candidate.center_xyz)
+
+        crop_t = torch.from_numpy(crop_a).to(torch.float32)
+        crop_t = crop_t.unsqueeze(0)
         label_t = torch.tensor(
             [not candidate.is_nodule, candidate.is_nodule],
             dtype=torch.long,
